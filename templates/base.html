@@ -9,6 +9,9 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	<script src="https://unpkg.com/feather-icons"></script>
+
 	<title>Flashcards</title>
 </head>
 <body>
@@ -45,10 +48,10 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<li class="nav-item">
-					<a class="nav-link" href="/">Login</a>
+					<a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal" href="">Login</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Get Started</a>
+					<a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal" href="">Get Started</a>
 				</li>		  
 			</ul>
 
@@ -57,14 +60,135 @@
 	</nav>
 
 	<!-- ------------------------------------Main Content - index.html - Container ---------------- -->
-	<div class="main">
-		{% block content %}
-		
-		{% endblock %}
+	{% block content %}
+	
+	{% endblock %}
+
+	<!-- ------------------------------------Footer ---------------------------- -->
+	<div class="footer container">
+		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+		  <div class="col-md-4 d-flex align-items-center">
+			<a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+			  <!-- <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg> -->
+			  <!-- <i data-feather="book" class="bi" width="30" height="24"></i> -->
+			</a>
+			<span class="text-muted">&copy; 21F1005053 Pavan, IIT Madras Online Degree </span>
+		  </div>
+	  
+		  <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+			<li class="ms-3"><a class="text-muted" href="#"><i data-feather="github" class="bi" width="24" height="24"></i></a></li>
+			<li class="ms-3"><a class="text-muted" href="#"><i data-feather="mail" class="bi" width="24" height="24"></i></a></li>
+		  </ul>
+		</footer>
 	</div>
+
+	<!-- Login Modal -->
+	<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="loginModal">Login</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form>					  
+					<!-- Email input -->
+					<div class="form-outline mb-4">
+						<input type="email" id="form3Example3" class="form-control"
+						placeholder="Email address" />
+					</div>
+			
+					<!-- Password input -->
+					<div class="form-outline mb-3">
+						<input type="password" id="form3Example4" class="form-control"
+						placeholder="Password" />
+					</div>
+			
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="form-check mb-0">
+						<input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+						<label class="form-check-label" for="form2Example3">
+							Remember me
+						</label>
+						</div>
+						<a href="#!" class="text-body">Forgot password?</a>
+					</div>
+			
+					<div class="text-center text-lg-start  mt-4 pt-2">
+						<button type="submit" class="btn btn-primary">Login</button>
+						<p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? 
+							<a href="#!"class="link" data-bs-target="#signupModal" data-bs-toggle="modal" data-bs-dismiss="modal">Sign up</a>
+						</p>
+					</div>
+			
+					</form>
+			</div>
+		</div>
+		</div>
+	</div>
+	
+	<!-- Get Started Modal -->
+	<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="signupModal">Get Started</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form>			
+					<div class="row g-3 mb-3">
+						<div class="col">
+							<input type="name" class="form-control" id="fName" placeholder="First name" aria-label="First name">
+						</div>
+						<div class="col">
+							<input type="name" class="form-control" id="lName" placeholder="Last name" aria-label="Last name">
+						</div>
+					</div>		  
+					<!-- Email input -->
+					<div class="form-outline mb-3">
+						<input type="email" id="email" class="form-control"
+						placeholder="Email address" />
+					</div>
+			
+					<!-- Password input -->
+					<div class="form-outline mb-3">
+						<input type="password" id="password" class="form-control"
+						placeholder="Password" />
+					</div>
+					<div class="form-outline mb-3">
+						<input type="password" id="cPassword" class="form-control"
+							placeholder="Confirm Password" />
+						</div>
+			
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="form-check mb-0">
+						<input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+						<label class="form-check-label" for="form2Example3">
+							Remember me
+						</label>
+						</div>
+						<button type="submit" class="btn btn-primary">Sign up</button>
+						<!-- <a href="#!" class="text-body">Forgot password?</a> -->
+					</div>
+			
+					<div class="text-center text-lg-start ">
+						<p class="small fw-bold mt-2 pt-1 mb-0">Already have an Account? 
+							<a href=""class="link" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Login</a>
+						</p>
+					</div>
+			
+					</form>
+			</div>
+		</div>
+		</div>
+	</div>
+		
 
 	<!-------------------------------Bootstrap JS-------------------------------->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	
+	<script>
+      feather.replace()
+    </script>
 </body>
 </html>
