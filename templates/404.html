@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Page Not Found
+{% endblock %}
+
+{% block content %}
+<div clsas="container">
+
+{% if message %}
+<h1>User Logged out. Please log back in. Go to <a href="{{ url_for('index') }}">Main Page</a></h1>
+{%else%}
+<h1>Page not found. Go to <a href="{{ url_for('index') }}">Main Page</a></h1>
+{%endif%}
+</div>
+{% endblock %}

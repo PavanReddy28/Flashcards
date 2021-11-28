@@ -37,9 +37,16 @@
 
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<!-- Need to an if statement using jinja to change it to dashboard when user is logged in -->
-					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Home</a>
-					</li>
+					{% if current_user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Home</a>
+						</li>
+					{% endif %}
+
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url_for('review') }}">Review</a>
 					</li>
@@ -58,12 +65,24 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal" href="">Login</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal" href="">Get Started</a>
-					</li>
+					{% if current_user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="/logout">Logout</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ url_for('security.login') }}">Login</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ url_for('security.register') }}">Get Started</a>
+						</li>
+						<!-- <li class="nav-item">
+							<a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal" href="">Login</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal" href="">Get Started</a>
+						</li> -->
+					{% endif %}
 				</ul>
 
 			</div>
@@ -149,17 +168,13 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form>
-						<div class="row g-3 mb-3">
-							<div class="col">
-								<input type="name" class="form-control" id="fName" placeholder="First name"
-									aria-label="First name">
-							</div>
-							<div class="col">
-								<input type="name" class="form-control" id="lName" placeholder="Last name"
-									aria-label="Last name">
-							</div>
+					<form  method="POST">
+					
+						<!-- Name input -->
+						<div class="form-outline mb-3">
+							<input type="name" id="username" class="form-control" placeholder="Name" />
 						</div>
+
 						<!-- Email input -->
 						<div class="form-outline mb-3">
 							<input type="email" id="email" class="form-control" placeholder="Email address" />
@@ -208,3 +223,14 @@
 </body>
 
 </html>
+
+	<!-- <div class="row g-3 mb-3">
+							<div class="col">
+								<input type="name" class="form-control" id="fName" placeholder="First name"
+									aria-label="First name">
+							</div>
+							<div class="col">
+								<input type="name" class="form-control" id="lName" placeholder="Last name"
+									aria-label="Last name">
+							</div>
+						</div> -->
