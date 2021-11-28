@@ -6,5 +6,47 @@
 
 {% block content %}
 
+<div class="container">
+  <div class="jumbatron" style="margin-top: 1rem;">
+      <h1>Review Page</h1>
+  </div>
+</div>
+
+<div class="container" style="padding:1rem">
+  <h3>Need to be Reviewed</h3>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for deck in decks %}
+          <div class="col">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ deck.deck_name }}</h5>
+                      <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: 21-10-2021{{ deck.access_time }}</h6>
+                      <p class="card-text">{{ deck.deck_description }}</p>
+                      <a href="#" class="card-link stretched-link">View Deck</a>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+    </div>
+</div>
+
+<div class="container" style="padding:1rem">
+  <h3>Reviewed</h3>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for deck in decks %}
+          <div class="col">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ deck.deck_name }}</h5>
+                      <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: 21-10-2021{{ deck.access_time }}</h6>
+                      <p class="card-text">{{ deck.deck_description }}</p>
+                      <a href="#" class="card-link stretched-link">View Deck</a>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+    </div>
+</div>
+
 
 {% endblock %}

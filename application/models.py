@@ -25,6 +25,7 @@ class Decks(db.Model):
     deck_id = db.Column(db.Integer, primary_key=True)
     deck_name = db.Column(db.String(50))
     deck_description = db.Column(db.String)
+    access_time = db.Column(db.DateTime)
     id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
 
 class Cards(db.Model):

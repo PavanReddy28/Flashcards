@@ -15,12 +15,16 @@ def index():
 @app.route("/review")
 @login_required
 def review():
-    return render_template('review.html')
+    ## Get decks information
+    decks = db.session.query(Decks).filter(Decks.id==3)    
+    return render_template('review.html', decks=decks)
 
 @app.route("/library")
 @login_required
 def library():
-    return render_template('library.html')
+    ## Get decks information
+    decks = db.session.query(Decks).filter(Decks.id==3)   
+    return render_template('library.html', decks=decks)
 
 @app.route("/dashbaord")
 @login_required
@@ -32,6 +36,11 @@ def dashboard():
     user = flask_login.current_user
 
     ## Get decks information
-    decks = db.session.query(Decks).filter(Decks.id==3)
+    decks = db.session.query(Decks).filter(Decks.id==3).limit(3)
+
+    # incomplete
+    # recent decks -  top 3
+    # need to be reviewed - top 3
+    # not attempted - Show all
     
     return render_template('dashboard.html', user=user, decks=decks)
