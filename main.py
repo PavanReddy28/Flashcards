@@ -47,9 +47,6 @@ app, api, jwt = create_app()
 
 from application.controllers import *
 
-from application.api import UserAPI, UserRegister, UserLogin
-
-api.add_resource(UserAPI, "/user/<string:username>")
 
 
 @app.errorhandler(404)
@@ -68,3 +65,9 @@ def check_if_token_is_revoked(jwt_header, jwt_payload):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+# from application.api import UserAPI, UserRegister, UserLogin
+
+# api.add_resource(UserAPI, "/user/<string:username>")

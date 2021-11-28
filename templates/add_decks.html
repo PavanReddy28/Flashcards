@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Add Deck
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbatron" style="margin-top: 1rem;">
+      <h1>Add Deck</h1>
+  </div>
+</div>
+
+<div class="container">
+    <form action="{{ url_for('addDecks') }}" method="post" enctype="multipart/form-data" >
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="dName" name="deck_name" placeholder="Deck Name">
+            <label for="dName">Deck Name</label>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Deck Description" name="deck_desc" id="descDeck" style="height: 5rem"></textarea>
+            <label for="descDeck">Deck Description</label>
+        </div>
+        <div class="mb-3" style="margin-top: 2rem;">
+            <h3>Add Cards</h3>
+            <label for="formFile" class="form-label">Import from .CSV file</label>
+            <input class="form-control" type="file" accept=".csv" name="csvFile"/>
+        </div>
+
+        <h4 style="margin:2rem;">(or)</h4>
+
+        <h6>Add Cards Manually</h6>
+        <div id="cardFields" style="padding:1rem;">
+            <div class="card" style="padding: 1rem;">
+                <p class="lead">Card 1</p>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="front_card_1" name="front_1" placeholder="Front Card">
+                    <label for="front_card_1">Front Card</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="back_card_1" name="back_1" placeholder="Back Card">
+                    <label for="back_card_1">Back Card</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="lang_card_1" name="lang_1" placeholder="Language Front">
+                    <label for="lang_1">Language Front</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="lang2_card_1" name="lang2_1" placeholder="Language Back">
+                    <label for="lang2_1">Language Back</label>
+                </div>
+                <div class="mb-3">
+                    <label for="difficulty_1">Choose Difficulty</label>
+                    <select class="form-select" aria-label="Default select example" id="difficulty_1" name="diff_1">
+                        <option value="1" selected>Easy</option>
+                        <option value="2">Moderate</option>
+                        <option value="3">Difficult</option>
+                      </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem; ">
+            <button class="btn btn-outline-dark" type="button" id="addCard" onclick="addCardField()"><i data-feather="plus" class="card-img"></i></button>
+        </div>
+        <div class="row" style="padding: 1rem; ">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+       
+    </form>
+</div>
+
+{% endblock %}
