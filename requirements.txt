@@ -1,3 +1,8 @@
-flask
-flask-sqlalchemy
-flask-restful
+Flask = "*"
+Flask-SQLAlchemy = "*"
+flask-restful = "*"
+flask-jwt-extended = "*"
+flask-bcrypt = "*"
+flask-security = "*"
+email-validator = "*"
+python-dotenv = "*"
