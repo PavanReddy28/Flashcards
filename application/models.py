@@ -16,23 +16,24 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
 class Role(db.Model, RoleMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.String)
     
 class Decks(db.Model):
     __tablename__ = 'decks'
-    deck_id = db.Column(db.Integer, primary_key=True)
+    deck_id = db.Column(db.Integer, autoincrement=True,  primary_key=True)
     deck_name = db.Column(db.String(50))
     deck_description = db.Column(db.String)
     access_time = db.Column(db.DateTime)
-    id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Cards(db.Model):
     __tablename__ = 'cards'
-    card_id = db.Column(db.Integer, primary_key=True)
-    card_name = db.Column(db.String(50))
+    card_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     front = db.Column(db.String(50))
     back = db.Column(db.String(50))
+    lang_back = db.Column(db.String)
+    lang_front = db.Column(db.String)
     score = db.Column(db.Integer)
     deck_id = db.Column(db.Integer, db.ForeignKey('decks.deck_id'), nullable=False)
