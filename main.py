@@ -46,7 +46,9 @@ app, api, jwt = create_app()
 
 
 from application.controllers import *
+from application.api import CardsAPI
 
+api.add_resource(CardsAPI, "/cards/<int:card_id>")
 
 
 @app.errorhandler(404)

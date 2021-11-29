@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Report
+{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+  <div class="jumbatron " style="margin-top: 1rem;">
+      <h1>Report</h1>
+  </div>
+</div>
+<div class="container justify-content-center" style="padding:2rem;">
+  {% for card in cards%}
+  <div class="row mb-3 d-flex justify-content-center">
+    <h4>Front : {{card.front}}</h4>
+    <h4>Back : {{card.back}}</h4>
+    <h6>Score : {{card.score}}</h6>    
+  </div>
+  {% endfor%}
+  <div class="row mb-3 d-flex justify-content-center">
+    <h2>Total Score : {{score}}</h2>
+    <p class="lead small mb-3">This score shows your prepardness for this deck.</p>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,19 +1,120 @@
-{% extends "base.html" %}
-
-{% block title %}
-  deck
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %} {{deck.deck_name}} {% endblock %} {% block content %}
 
 <div class="container">
-  <div class="jumbatron" style="margin-top: 1rem;">
-    {% for card in cards %}
-      <h1>{{ cards.card_id }}</h1>
-      <p class="lead">{{ cards.front }}</p>
-    {%endfor%}
-  </div>
+	<div class="jumbatron" style="margin-top: 1rem;">
+		<h1>{{deck.deck_name}}</h1>
+		<p class="lead">{{deck.deck_description}}</p>
+	</div>
 </div>
+
+<form >
+  <div id = "card_n" class="container d-flex justify-content-center" >
+    <div class="card mb-3" >
+      <div class="card-body  d-flex justify-content-center">
+        <h1 class="card-title">{{ cards.0.front }}</h1>
+      </div>
+    </div>     
+  </div>
+  <div class="container d-flex justify-content-center">
+  <div class="mb-3" >
+      <select class="form-select" id="options" name="score" aria-label="Floating label select example">
+        <option selected value="0">Choose Difficulty</option>
+        <option value="1">Easy</option>
+        <option value="2">Moderate</option>
+        <option value="3">Difficult</option>
+      </select>
+    </div>
+  </div>
+  <div class="container">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <!-- <li class="page-item">
+          <button id="prev" class="page-link">Previous</button>
+        </li> -->
+        {% for card in cards %}
+        <li id="color_{{card.card_id}}" class="page-item"><a typ="submit" name="input_{{card.card_id}}" class="page-link" id="{{card.card_id}}">{{card.card_id}}</a></li>
+        {%endfor%}
+        <!-- <li class="page-item">
+          <button id="next" class="page-link" href="#">Next</button>
+        </li> -->
+      </ul>
+    </nav>
+  </div>
+</form>
+
+<div class="container d-flex justify-content-center">
+  <a id="nextPage" class="btn btn-primary" href="{{ url_for('score',deck_id=deck.deck_id ) }}">Submit</a>
+</div>
+
+<script>
+  var list=[]
+  var btns = []
+  var count = 0
+  var present = {{cards.0.card_id}}
+
+  document.getElementById("nextPage").onclick = (e) => {
+    if(count<list.length)
+    {
+      console.log(count)
+      alert("Please review all cards.");
+    } else {
+      
+    }
+  }
+  document.getElementById("nextPage").style.visibility = 'hidden';
+
+  {% for card in cards %}
+    list.push([{{card.card_id}}, "{{card.front}}"])
+    btns.push(document.getElementById("{{card.card_id}}"))
+
+    document.getElementById("{{card.card_id}}").onclick = (e)=> {
+      e.preventDefault();
+      if(document.getElementById("options").value != "0") {
+        console.log("Send", document.getElementById("options").value)
+        var formData=new FormData();
+        formData.append("score", parseInt(document.getElementById("options").value));
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+        var xhr=new XMLHttpRequest();
+        xhr.open("PUT","/cards/"+present,true);
+        xhr.upload.addEventListener("load", (ev) => {
+          console.log("Uploaded.")
+          var card_div = document.getElementById("card_n")
+          card_div.innerHTML = `
+            <div id = "card_n" class="container d-flex justify-content-center" >
+              <div class="card mb-3" >
+                <div class="card-body  d-flex justify-content-center">
+                  <h1 class="card-title">{{ card.front }}</h1>
+                </div>
+              </div>     
+            </div>
+          `
+          document.getElementById("color_"+present).classList.add("active")
+          console.log(document.getElementById("color_"+present).classList)
+          document.getElementById("options").value = "0";
+          count+=1;
+          present = {{card.card_id}}
+          if(count>=list.length)
+          {
+            console.log(count)
+            document.getElementById("nextPage").style.visibility = 'visible';
+          }
+        });
+
+        xhr.send(formData);
+      }
+      else {
+        console.log("Enter")
+      }
+      
+    }
+  {% endfor %}
+
+  
+  console.log(list, btns);
+</script>
 
 
 

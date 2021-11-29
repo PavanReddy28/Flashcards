@@ -1,14 +1,53 @@
-from application.models import User
+from application.models import User, Cards
 from application.validation import NotFoundError
 from flask_restful import Resource, marshal_with, fields, reqparse
 from .database import db
 from  .blacklist import BLACKLIST
-from flask import jsonify, session
+from flask import jsonify, session, request
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, get_jwt
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 
+class CardsAPI(Resource):
 
+  def __init__(self):
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('score', type = int)
+    self.reqparse.add_argument('front', type = str, location = 'json')
+    self.reqparse.add_argument('back', type = str, location = 'json')
+    self.reqparse.add_argument('lang_front', type = str, location = 'json')
+    self.reqparse.add_argument('lang_back', type = str, location = 'json')
+    super(CardsAPI, self).__init__()
+
+  def get(self):
+    pass
+  
+  def put(self, card_id):
+    card = Cards.query.get_or_404(card_id)
+    args = self.reqparse.parse_args()
+    print(card, args)
+    if args['score']:
+      card.score =  4-args['score']
+      # deck = Decks.query.get_or_404(card.deck_id)
+      # deck.score
+      # print(card.score, args['score'])
+    if args['front']:
+      card.score =  args['front']
+    if args['back']:
+      card.score =  args['back']
+    if args['lang_front']:
+      card.score =  args['lang_front']
+    if args['lang_back']:
+      card.score =  args['lang_back']  
+    db.session.commit()
+     
+    
+  
+  def post(self):
+    pass
+  
+  def delete(self):
+    pass
 
 
 # user_output = {"uid": fields.Integer, "user_fname": fields.String, "user_email": fields.String}

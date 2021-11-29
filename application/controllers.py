@@ -32,7 +32,7 @@ def library():
     user = flask_login.current_user
     decks=[]
     # decks = Decks.query.filter(Decks.id==user.id).limit(3)
-    decks = db.session.query(Decks).filter(Decks.id==user.id)
+    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc())
     return render_template('library.html', decks=decks)
 
 @app.route("/dashbaord")
@@ -47,7 +47,8 @@ def dashboard():
     ## Get decks information
     decks=[]
     # decks = Decks.query.filter(Decks.id==user.id).limit(3)
-    decks = db.session.query(Decks).filter(Decks.id==user.id).limit(3)
+    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc()).limit(3)
+    # .orderby(access_time).limit(3)
 
     # incomplete
     # recent decks -  top 3
@@ -70,9 +71,22 @@ def editDecks():
 @app.route("/deck/<int:deck_id>")
 @login_required
 def deck(deck_id):
-    cards = db.session.query(Cards).filter( Cards.deck_id==deck_id)    
-    print(cards)
-    return render_template('decks.html', cards=cards)
+    cards = db.session.query(Cards).filter( Cards.deck_id==deck_id ).all()    
+    print(cards, deck_id, type(deck_id))
+    deck = db.session.query(Decks).filter(Decks.deck_id == deck_id).first()
+    return render_template('decks.html', cards=cards, deck=deck)
+
+@app.route("/score/<int:deck_id>", methods=["GET"])
+@login_required
+def score(deck_id):
+  deck = db.session.query(Cards).filter(Cards.deck_id==deck_id).all()
+  print(deck, deck[0])
+  score = 0
+  for card in deck:
+    score += card.score 
+  score = int(( score/ (len(deck)*3)) * 100 )
+  print(score)
+  return render_template('score.html', cards=deck, score=score)
 
 @app.route("/addDecks", methods=["GET", "POST"])
 @login_required
