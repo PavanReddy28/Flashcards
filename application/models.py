@@ -27,6 +27,7 @@ class Decks(db.Model):
     deck_description = db.Column(db.String)
     access_time = db.Column(db.DateTime)
     last_review = db.Column(db.DateTime)
+    score = db.Column(db.Integer)
     id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Cards(db.Model):

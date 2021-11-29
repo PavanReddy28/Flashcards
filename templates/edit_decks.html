@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Add Deck
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbatron" style="margin-top: 1rem;">
+      <h1>Edit Deck</h1>
+  </div>
+</div>
+
+<div class="container">
+    <form >
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="dName" name="deck_name" placeholder="Deck Name">
+            <label for="dName">Deck Name</label>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Deck Description" name="deck_desc" id="descDeck" style="height: 5rem"></textarea>
+            <label for="descDeck">Deck Description</label>
+        </div>
+        <div class="row" style="padding: 1rem; ">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+       
+    </form>
+</div>
+
+<script>
+   document.getElementById("{{card.card_id}}").onclick = (e)=> {
+      e.preventDefault();
+      if(document.getElementById("dName").value!="" && document.getElementById("descDeck").value!="") {
+        var formData=new FormData();
+        formData.append("deck_name", document.getElementById("dName").value);
+        formData.append("deck_description", document.getElementById("descDeck").value);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+        var xhr=new XMLHttpRequest();
+        xhr.open("PUT","/decks/{{deck.deck_id}}",true);
+        xhr.upload.addEventListener("load", (ev) => {
+        
+        });
+
+        xhr.send(formData);
+      }
+  </script>
+
+{% endblock %}

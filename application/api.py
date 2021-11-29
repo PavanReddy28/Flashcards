@@ -1,4 +1,4 @@
-from application.models import User, Cards
+from application.models import User, Cards, Decks
 from application.validation import NotFoundError
 from flask_restful import Resource, marshal_with, fields, reqparse
 from .database import db
@@ -28,9 +28,6 @@ class CardsAPI(Resource):
     print(card, args)
     if args['score']:
       card.score =  4-args['score']
-      # deck = Decks.query.get_or_404(card.deck_id)
-      # deck.score
-      # print(card.score, args['score'])
     if args['front']:
       card.score =  args['front']
     if args['back']:
@@ -48,6 +45,29 @@ class CardsAPI(Resource):
   
   def delete(self):
     pass
+
+class DecksAPI(Resource):
+
+  def __init__(self):
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('deck_name', type = int)
+    self.reqparse.add_argument('deck_description', type = str, location = 'json')
+    super(DecksAPI, self).__init__()
+
+  def delete(self, deck_id):
+    deck = db.session.query(Decks).filter(Decks.deck_id == deck_id).first()
+    db.session.delete(deck)
+    db.session.commit()
+  
+  def put(self, deck_id):
+    deck = Decks.query.get_or_404(deck_id)
+    args = self.reqparse.parse_args()
+    if args['deck_name']:
+      deck.deck_name = args['deck_name']
+    if args['deck_description']:
+      deck.deck_description = args['deck_description']
+    db.session.commit()
+    
 
 
 # user_output = {"uid": fields.Integer, "user_fname": fields.String, "user_email": fields.String}

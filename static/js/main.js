@@ -1,12 +1,15 @@
 const fields = 10
-var x=1
+
 const addCardField = (e) => {
+    var count = parseInt(document.getElementById("cards_num").value)-1
+    console.log(x)
     var cards = document.getElementById("cardFields")
-    if (x<=fields) {
+    var x = 1
+    while (x<=count && x<=fields-1) {
         x++;
         cards.innerHTML +=
             `
-            <div class="card" style="padding: 1rem;">
+            <div class="card" style="padding:1rem; margin: 1rem;">
             <p class="lead">Card ${x}</p>
             <div class="col ">
                 <div class="form-floating mb-3">

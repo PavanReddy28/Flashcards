@@ -22,8 +22,9 @@ def review():
     print(user.id)
     decks=[]
     # decks = Decks.query.filter(Decks.id==user.id).limit(3)
-    decks = db.session.query(Decks).filter(Decks.id==user.id)   
-    return render_template('review.html', decks=decks)
+    decks = db.session.query(Decks).filter(Decks.id==user.id).filter(Decks.last_review!=None).order_by(Decks.last_review.desc())   
+    review = db.session.query(Decks).filter(Decks.id==user.id).filter(Decks.last_review==None).order_by(Decks.access_time.desc())
+    return render_template('review.html', decks=decks, review=review)
 
 @app.route("/library")
 @login_required
@@ -32,7 +33,7 @@ def library():
     user = flask_login.current_user
     decks=[]
     # decks = Decks.query.filter(Decks.id==user.id).limit(3)
-    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc())
+    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc(), Decks.last_review.desc())
     return render_template('library.html', decks=decks)
 
 @app.route("/dashbaord")
@@ -48,7 +49,7 @@ def dashboard():
     decks=[]
     decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc(), Decks.last_review.desc()).limit(3)
 
-    review = db.session.query(Decks).filter(Decks.id==user.id).filter(Decks.last_review==None).limit(3)
+    review = db.session.query(Decks).filter(Decks.id==user.id).filter(Decks.last_review==None).order_by(Decks.access_time.desc()).limit(3)
 
     # incomplete
     # recent decks -  top 3
@@ -57,14 +58,15 @@ def dashboard():
     return render_template('dashboard.html', user=user, decks=decks, review=review)
 
 
-@app.route("/editDecks", methods=["GET", "POST"])
+@app.route("/editDecks/<int:deck_id>")
 @login_required
-def editDecks():
-    
+def editDecks(deck_id):    
     ## Get user information
     user = flask_login.current_user
-    
-    return render_template('edit_decks.html', user=user)
+    cards = db.session.query(Cards).filter( Cards.deck_id==deck_id ).all()    
+    print(cards, deck_id, type(deck_id))
+    deck = db.session.query(Decks).filter(Decks.deck_id == deck_id).first()
+    return render_template('edit_decks.html', user=user, deck=deck, cards=cards)
 
 @app.route("/deck/<int:deck_id>")
 @login_required
@@ -86,6 +88,9 @@ def score(deck_id):
   for card in deck:
     score += card.score 
   score = int(( score/ (len(deck)*3)) * 100 )
+  deck_write = Decks.query.get_or_404(deck_id)
+  deck_write.score = score
+  db.session.commit()
   print(score)
   return render_template('score.html', cards=deck, score=score)
 
@@ -93,12 +98,12 @@ def score(deck_id):
 @login_required
 def addDecks():
     ## Get user information
-    user = flask_login.current_user
+    user = flask_login.current_user      
     if request.method == 'POST':
         name = request.form["deck_name"]
         desc = request.form["deck_desc"]
         file = request.files["csvFile"]
-        deck = Decks(deck_name=name, deck_description=desc, id=user.id, access_time=datetime.now())
+        deck = Decks(deck_name=name, deck_description=desc, id=user.id, access_time=datetime.now(), score=0)
         db.session.add(deck)
         db.session.commit()
         db.session.flush()
@@ -120,5 +125,6 @@ def addDecks():
                 card = Cards(front=front, back=back, lang_front = lang, lang_back=lang2, score=diff, deck_id=deck.deck_id)
                 db.session.add(card)
                 db.session.commit()
+        return redirect('/library')
     
     return render_template('add_decks.html', user=user)

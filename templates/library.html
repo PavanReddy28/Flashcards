@@ -21,7 +21,7 @@
   </li>
 </ul>
 
-<div class="container" style="padding:1rem">
+<!-- <div class="container" style="padding:1rem">
   <div class="card text-center" style="margin:1rem">
       <div class="card-body">
       <h5 class="card-title">Incomplete</h5>
@@ -32,31 +32,63 @@
       2 days ago
       </div>
   </div>
-</div>
+</div> -->
 
 <div class="container" style="padding:1rem">
   <h3>All Decks</h3>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for deck in decks %}
-          <div class="col">
-              <div class="card h-100">
-                  <div class="card-body">
-                      <h5 class="card-title">{{ deck.deck_name }}</h5>
-                      <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.access_time }}</h6>
-                      <p class="card-text">{{ deck.deck_description }}</p>
-                      <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link stretched-link">View Deck</a>
+        {% for deck in decks %}
+            <div class="col" id="div_{{deck.deck_id}}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deck.deck_name }}</h5>
+                        <h6 class="small card-subtitle mb-2 text-muted">Created on: {{ deck.access_time }}</h6>
+                        {% if deck.last_review %}
+                        <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.last_review }}</h6>
+                        <h6 class="small card-subtitle mb-2 text-muted">Score: {{ deck.score }}</h6>
+                        {%else %}
+                        <span class="badge bg-primary">New</span>
+                        {% endif %}
+                        <p class="card-text">{{ deck.deck_description }}</p>
+                        <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link">View Deck</a>
+                        <a href="{{ url_for('editDecks', deck_id=deck.deck_id) }}" class="card-link">Edit Deck</a>
+                        {% if deck.last_review %}                       
                          <a href="{{ url_for('score', deck_id=deck.deck_id) }}" class="card-link">View Report</a>
-                  </div>
-              </div>
-        </div>
-      {% endfor %}
+                        {% endif %}
+                        <a class="btn" id="delete_{{deck.deck_id}}">
+                        <i data-feather="trash" class="bi" width="16"
+							height="16"></i></a>
+                    </div>
+                </div>
+          </div>
+        {% endfor %}
       <div class="col">
         <div class="card h-100">
           <i data-feather="plus" class=" card-img"></i>
           <a href="{{ url_for('addDecks') }}" class="card-link stretched-link"> </a>
         </div>
     </div>
-    </div>
+  </div>
 </div>
+<script>
+  {% for deck in decks %}
+   document.getElementById("delete_{{deck.deck_id}}").onclick = (e)=> {
+     var xhr=new XMLHttpRequest();
+        xhr.open("DELETE","/decks/{{deck.deck_id}}",true);
+        xhr.upload.addEventListener("load", (ev) => {
+          console.log("Uploaded.")
+          // var card_div = document.getElementById("div_{{deck.deck_id}}")
+          // card_div.style.display = "none"
+        });
+        xhr.send(); 
+        var card_div = document.getElementById("div_{{deck.deck_id}}")
+card_div.style.display = "none"     
+   }
+
+  {%endfor%}
+
+  
+</script>
+
 
 {% endblock %}

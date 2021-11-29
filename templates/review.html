@@ -13,41 +13,56 @@
 </div>
 
 <div class="container" style="padding:1rem">
-  <h3>Need to be Reviewed</h3>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for deck in decks %}
-          <div class="col">
-              <div class="card h-100">
-                  <div class="card-body">
-                      <h5 class="card-title">{{ deck.deck_name }}</h5>
-                      <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.access_time }}</h6>
-                      <p class="card-text">{{ deck.deck_description }}</p>
-                      <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link stretched-link">View Deck</a>
-                  </div>
-              </div>
-          </div>
-      {% endfor %}
+    <div class="row row-cols-2">
+        <h3>Need to be Reviewed</h3>
     </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for deck in review %}
+          {% if not deck.last_review %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deck.deck_name }}</h5>
+                        <h6 class="small card-subtitle mb-2 text-muted">Created on: {{ deck.access_time }}</h6>
+                        <span class="badge bg-primary">New</span>
+                        <p class="card-text">{{ deck.deck_description }}</p>
+                        <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link stretched-link">View Deck</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+      </div>
 </div>
 
+
 <div class="container" style="padding:1rem">
-  <h3>Reviewed</h3>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for deck in decks %}
-          <div class="col">
-              <div class="card h-100">
-                  <div class="card-body">
-                      <h5 class="card-title">{{ deck.deck_name }}</h5>
-                      <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.access_time }}</h6>
-                      <p class="card-text">{{ deck.deck_description }}</p>
-                      <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link stretched-link">View Deck</a>
-                      <a href="{{ url_for('score', deck_id=deck.deck_id) }}" class="card-link stretched-link">View Deck</a>
-                      
-                  </div>
-              </div>
-          </div>
-      {% endfor %}
+    <div class="row row-cols-2">
+        <h3>Reviewed</h3>
     </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for deck in decks %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deck.deck_name }}</h5>
+                        <h6 class="small card-subtitle mb-2 text-muted">Created on: {{ deck.access_time }}</h6>
+                        {% if deck.last_review %}
+                        <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.last_review }}</h6>
+                        <h6 class="small card-subtitle mb-2 text-muted">Score: {{ deck.score }}</h6>
+                        {%else %}
+                        <span class="badge bg-primary">New</span>
+                        {% endif %}
+                        <p class="card-text">{{ deck.deck_description }}</p>
+                        <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link">View Deck</a>
+                        {% if deck.last_review %}                       
+                         <a href="{{ url_for('score', deck_id=deck.deck_id) }}" class="card-link">View Report</a>
+                        {% endif %}
+                    </div>
+                </div>
+          </div>
+        {% endfor %}
+      </div>
 </div>
 
 

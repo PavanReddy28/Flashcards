@@ -24,15 +24,22 @@
         </div>
         <div class="mb-3" style="margin-top: 2rem;">
             <h3>Add Cards</h3>
-            <label for="formFile" class="form-label">Import from .CSV file</label>
+            <label for="formFile" class="h6 form-label">Import from .CSV file</label>
             <input class="form-control" type="file" accept=".csv" name="csvFile"/>
         </div>
 
         <h4 style="margin:2rem;">(or)</h4>
 
-        <h6>Add Cards Manually</h6>
-        <div id="cardFields" style="padding:1rem;">
-            <div class="card" style="padding: 1rem;">
+        <h6>Add Cards Manually (Max 10)</h6>
+        <div class="d-flex" style="padding:1rem;">
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="No. of Cards" type="Number" id="cards_num"></textarea>
+            <label for="cards_num">Number of cards</label>
+        </div>
+        <button class="btn btn-outline-dark" type="button" id="addCard" onclick="addCardField()"><i data-feather="plus" class="card-img"></i></button>
+        </div>
+        <div id="cardFields" style="padding: 1rem;">
+            <div class="card" style="padding:1rem; margin: 1rem;">
                 <p class="lead">Card 1</p>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="front_card_1" name="front_1" placeholder="Front Card">
@@ -50,20 +57,9 @@
                     <input type="text" class="form-control" id="lang2_card_1" name="lang2_1" placeholder="Language Back">
                     <label for="lang2_1">Language Back</label>
                 </div>
-                <div class="mb-3">
-                    <label for="difficulty_1">Choose Difficulty</label>
-                    <select class="form-select" aria-label="Default select example" id="difficulty_1" name="diff_1">
-                        <option value="1" selected>Easy</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">Difficult</option>
-                      </select>
-                </div>
-
             </div>
         </div>
-        <div class="row" style="padding: 1rem; ">
-            <button class="btn btn-outline-dark" type="button" id="addCard" onclick="addCardField()"><i data-feather="plus" class="card-img"></i></button>
-        </div>
+
         <div class="row" style="padding: 1rem; ">
             <button class="btn btn-primary" type="submit">Submit</button>
         </div>
