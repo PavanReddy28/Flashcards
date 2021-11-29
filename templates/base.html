@@ -38,13 +38,12 @@
 
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<!-- Need to an if statement using jinja to change it to dashboard when user is logged in -->
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Home</a>
+						</li>
 					{% if current_user.is_authenticated %}
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
-						</li>
-					{% else %}
-						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Home</a>
 						</li>
 					{% endif %}
 

@@ -20,7 +20,9 @@ def review():
     ## Get decks information
     user = flask_login.current_user
     print(user.id)
-    decks = db.session.query(Decks).filter(Decks.id==user.id)    
+    decks=[]
+    # decks = Decks.query.filter(Decks.id==user.id).limit(3)
+    decks = db.session.query(Decks).filter(Decks.id==user.id)   
     return render_template('review.html', decks=decks)
 
 @app.route("/library")
@@ -28,7 +30,9 @@ def review():
 def library():
     ## Get decks information
     user = flask_login.current_user
-    decks = db.session.query(Decks).filter(Decks.id==user.id)   
+    decks=[]
+    # decks = Decks.query.filter(Decks.id==user.id).limit(3)
+    decks = db.session.query(Decks).filter(Decks.id==user.id)
     return render_template('library.html', decks=decks)
 
 @app.route("/dashbaord")
@@ -41,6 +45,8 @@ def dashboard():
     user = flask_login.current_user
 
     ## Get decks information
+    decks=[]
+    # decks = Decks.query.filter(Decks.id==user.id).limit(3)
     decks = db.session.query(Decks).filter(Decks.id==user.id).limit(3)
 
     # incomplete
@@ -63,9 +69,10 @@ def editDecks():
 
 @app.route("/deck/<int:deck_id>")
 @login_required
-def Decks(deck_id):
-    deck = db.session.query(Cards).filter( Cards.deck_id==deck_id)    
-    return render_template('decks.html', deck=deck)
+def deck(deck_id):
+    cards = db.session.query(Cards).filter( Cards.deck_id==deck_id)    
+    print(cards)
+    return render_template('decks.html', cards=cards)
 
 @app.route("/addDecks", methods=["GET", "POST"])
 @login_required

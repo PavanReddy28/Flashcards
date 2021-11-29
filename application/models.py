@@ -21,7 +21,7 @@ class Role(db.Model, RoleMixin):
     description = db.Column(db.String)
     
 class Decks(db.Model):
-    __tablename__ = 'decks'
+    __tablename__ = 'Decks'
     deck_id = db.Column(db.Integer, autoincrement=True,  primary_key=True)
     deck_name = db.Column(db.String(50))
     deck_description = db.Column(db.String)
