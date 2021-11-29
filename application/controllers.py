@@ -46,16 +46,15 @@ def dashboard():
 
     ## Get decks information
     decks=[]
-    # decks = Decks.query.filter(Decks.id==user.id).limit(3)
-    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc()).limit(3)
-    # .orderby(access_time).limit(3)
+    decks = db.session.query(Decks).filter(Decks.id==user.id).order_by(Decks.access_time.desc(), Decks.last_review.desc()).limit(3)
+
+    review = db.session.query(Decks).filter(Decks.id==user.id).filter(Decks.last_review==None).limit(3)
 
     # incomplete
     # recent decks -  top 3
     # need to be reviewed - top 3
-    # not attempted - Show all
     
-    return render_template('dashboard.html', user=user, decks=decks)
+    return render_template('dashboard.html', user=user, decks=decks, review=review)
 
 
 @app.route("/editDecks", methods=["GET", "POST"])
@@ -64,7 +63,6 @@ def editDecks():
     
     ## Get user information
     user = flask_login.current_user
-
     
     return render_template('edit_decks.html', user=user)
 
@@ -74,6 +72,9 @@ def deck(deck_id):
     cards = db.session.query(Cards).filter( Cards.deck_id==deck_id ).all()    
     print(cards, deck_id, type(deck_id))
     deck = db.session.query(Decks).filter(Decks.deck_id == deck_id).first()
+    deck_write = Decks.query.get_or_404(deck.deck_id)
+    deck_write.last_review = datetime.now()
+    db.session.commit()
     return render_template('decks.html', cards=cards, deck=deck)
 
 @app.route("/score/<int:deck_id>", methods=["GET"])
@@ -114,7 +115,7 @@ def addDecks():
                 back = request.form["back_"+str(count)]
                 lang = request.form["lang_"+str(count)]
                 lang2 = request.form["lang2_"+str(count)]
-                diff = request.form["diff_"+str(count)]
+                diff = 0
                 count+=1
                 card = Cards(front=front, back=back, lang_front = lang, lang_back=lang2, score=diff, deck_id=deck.deck_id)
                 db.session.add(card)
