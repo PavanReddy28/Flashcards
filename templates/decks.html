@@ -9,7 +9,7 @@
 
 <form >
   <div id = "card_n" class="container d-flex justify-content-center" >
-    <div class="card mb-3" >
+    <div class="card mb-3" id="card_front">
       <div class="card-body  d-flex justify-content-center">
         <h1 class="card-title">{{ cards.0.front }}</h1>
       </div>
@@ -50,7 +50,29 @@
   var list=[]
   var btns = []
   var count = 0
+  var dict = {
+
+  }
   var present = {{cards.0.card_id}}
+var bool = true
+  document.getElementById("card_front").onclick = (e)=> {
+    console.log(bool, 'ok')
+    if(bool){
+      console.log("ENterrr")
+    document.getElementById("card_n").innerHTML+=`
+            <div id = "card_n" class="container d-flex justify-content-center" >
+              <div class="card mb-3" id="card_front">
+                <div class="card-body  d-flex justify-content-center">
+                  <h1 class="card-title">${list[count][2]}</h1>
+                </div>
+              </div>     
+            </div>
+          `
+    }
+    else {
+
+    }
+  }
 
   document.getElementById("nextPage").onclick = (e) => {
     if(count<list.length)
@@ -64,7 +86,7 @@
   document.getElementById("nextPage").style.visibility = 'hidden';
 
   {% for card in cards %}
-    list.push([{{card.card_id}}, "{{card.front}}"])
+    list.push([{{card.card_id}}, "{{card.front}}", "{{card.back}}"])
     btns.push(document.getElementById("{{card.card_id}}"))
 
     document.getElementById("{{card.card_id}}").onclick = (e)=> {
@@ -81,10 +103,12 @@
         xhr.open("PUT","/cards/"+present,true);
         xhr.upload.addEventListener("load", (ev) => {
           console.log("Uploaded.")
+          var name = "{{card.card_id}}"
+          bool=false
           var card_div = document.getElementById("card_n")
           card_div.innerHTML = `
             <div id = "card_n" class="container d-flex justify-content-center" >
-              <div class="card mb-3" >
+              <div class="card mb-3" id="card_front">
                 <div class="card-body  d-flex justify-content-center">
                   <h1 class="card-title">{{ card.front }}</h1>
                 </div>
