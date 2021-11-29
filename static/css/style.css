@@ -1,0 +1,42 @@
+/* Carousel Customization */
+.carousel {
+  margin-bottom: 4rem;
+}
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+.carousel-item {
+  height: 32rem;
+}
+.carousel-item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 32rem;
+}
+
+/* Home Content */
+.home_content {
+  /* height: 25rem; */
+  text-align: center;
+  padding: 1rem;
+}
+
+.c1 {
+  padding: 2rem;
+}
+
+.c2 {
+  padding: 2rem;
+}
+
+.c2 li {
+  margin: 1.5rem;
+}
+
+.feather-24{
+  width: 24px;
+  height: 24px;
+  }

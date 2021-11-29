@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="jumbatron" style="margin-top: 1rem;">
+        <h1>Welcome back {{ user.email }}!</h1>
+    </div>
+</div>
+
+<ul class="nav nav-tabs justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link " href="{{ url_for('addDecks') }}">Add Deck</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Download Decks</a>
+  </li>
+</ul>
+
+<div class="container" style="padding:1rem">
+    <div class="row row-cols-2">
+        <h3>Recent Decks</h3>
+        <div >
+            <a href="{{ url_for('library') }}">View All</a>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for deck in decks %}
+            <div class="col" id="div_{{deck.deck_id}}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deck.deck_name }}</h5>
+                        <h6 class="small card-subtitle mb-2 text-muted">Created on: {{ deck.access_time }}</h6>
+                        {% if deck.last_review %}
+                        <h6 class="small card-subtitle mb-2 text-muted">Last Reviewed on: {{ deck.last_review }}</h6>
+                        <h6 class="small card-subtitle mb-2 text-muted">Score: {{ deck.score }}</h6>
+                        {%else %}
+                        <span class="badge bg-primary">New</span>
+                        {% endif %}
+                        <p class="card-text">{{ deck.deck_description }}</p>
+                        <a href="{{ url_for('deck', deck_id=deck.deck_id) }}" class="card-link">View Deck</a>
+                        <a href="{{ url_for('editDecks', deck_id=deck.deck_id) }}" class="card-link">Edit Deck</a>
+                        {% if deck.last_review %}                       
+                         <a href="{{ url_for('score', deck_id=deck.deck_id) }}" class="card-link">View Report</a>
+                        {% endif %}
+                        <a class="btn" id="delete_{{deck.deck_id}}">
+                        <i data-feather="trash" class="bi" width="16"
+							height="16"></i></a>
+                    </div>
+                </div>
+          </div>
+        {% endfor %}
+      </div>
+</div>
+
+<div class="container" style="padding:1rem">
+    <div class="row row-cols-2">
+        <h3>Need to be Reviewed</h3>
+        <div >
+            <a href="{{ url_for('review') }}">View All</a>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for deck in review %}
+          {% if not deck.last_review %}
+            <div class="col" id="div_{{deck.deck_id}}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deck.deck_name }}</h5>
+                        <h6 class="small card-subtitle mb-2 text-muted">Created on: {{ deck.access_time }}</h6>
+                        <span class="badge bg-primary">New</span>
+                        <p class="card-text">{{ deck.deck_description }}</p>
+                        <a href="{{ url_for('editDecks', deck_id=deck.deck_id) }}" class="card-link">Edit Deck</a>                     
+                         <a href="{{ url_for('score', deck_id=deck.deck_id) }}" class="card-link">View Report</a>
+                        <a class="btn" id="delete_{{deck.deck_id}}">
+                        <i data-feather="trash" class="bi" width="16"
+							height="16"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+      </div>
+</div>
+
+<script>
+  {% for deck in decks %}
+   document.getElementById("delete_{{deck.deck_id}}").onclick = (e)=> {
+     var xhr=new XMLHttpRequest();
+        xhr.open("DELETE","/decks/{{deck.deck_id}}",true);
+        xhr.upload.addEventListener("load", (ev) => {
+          console.log("Uploaded.")
+          var card_div = document.getElementById("div_{{deck.deck_id}}")
+          card_div.style.visibility = 'hidden'
+        });
+        xhr.send();      
+   }
+
+  {%endfor%}
+
+  {% for deck in review %}
+  document.getElementById("delete_{{deck.deck_id}}").onclick = (e)=> {
+  var xhr=new XMLHttpRequest();
+    xhr.open("DELETE","/decks/{{deck.deck_id}}",true);
+    xhr.upload.addEventListener("load", (ev) => {
+      console.log("Uploaded.")
+      var card_div = document.getElementById("div_{{deck.deck_id}}")
+      card_div.style.visibility = 'hidden'
+    });
+    xhr.send();      
+   }
+  {%endfor%}
+  
+</script>
+
+
+{% endblock %}
